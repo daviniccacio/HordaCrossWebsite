@@ -8,75 +8,117 @@
     <link rel="shortcut icon" href="./assets/img/icon/hordacrossicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body class="font-['Poppins'] bg-gray-100">
 
-    <header class="bg-white flex flex-row items-center justify-between gap-10 p-5 h-[75px] pr-10 shadow-xl rounded-xl shadow-200">
+    <header class="bg-white flex flex-row items-center justify-between gap-10 p-5 h-[75px] pr-10 shadow-xl 
+                transition duration-300 transform fixed top-0 w-full z-[100]">
         <img src="./assets/img/logohorda.png" class="w-[50px] h-[50px]">
-        <div class="flex flex-row justify-end gap-10 text-sm font-light">
-            <a href="#inicio">
-                <button class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">Início</button>
+        
+        <nav class="hidden md:flex flex-row justify-end gap-5 lg:gap-10 text-sm font-light">
+            <a href="#inicio" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+                Início
             </a>
-            <a href="#sobre">
-                <button class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">Sobre</button>
+            <a href="#sobre" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+                Sobre
             </a>
-            <a href="#planos-mensais">
-                <button class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">Planos</button>
+            <a href="#planos-mensais" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+                Planos
             </a>
-            <a href="#contatos">
-                <button class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">Contato</button>
+            <a href="#contatos" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+                Contato
             </a>
-
-        </div>
+        </nav>
+        
+        <button id="menu-toggle" class="md:hidden text-2xl p-2 z-20">
+            <i class="bi bi-list"></i>
+        </button>
     </header>
 
-    <main class="space-y-12 my-10">
+    <div id="mobile-menu" class="hidden bg-white shadow-lg w-full absolute top-[75px] left-0 z-10 md:hidden">
+        <nav class="flex flex-col p-4 text-center space-y-3 font-medium text-lg">
+            <a href="#inicio" class="block py-2 hover:bg-gray-100 transition duration-300">Início</a>
+            <a href="#sobre" class="block py-2 hover:bg-gray-100 transition duration-300">Sobre</a>
+            <a href="#planos-mensais" class="block py-2 hover:bg-gray-100 transition duration-300">Planos</a>
+            <a href="#contatos" class="block py-2 hover:bg-gray-100 transition duration-300">Contato</a>
+        </nav>
+    </div>
 
-        <section id="inicio" class="flex justify-center p-5">
+    <main class="space-y-12 my-10 **pt-[75px]**">
+
+        <section id="inicio" class="flex justify-center p-20">
             <div class="bg-[#2b2b2b] w-full max-w-6xl rounded-xl p-8 flex flex-col md:flex-row justify-around items-center gap-10">
-                <img class="w-full W-[700px] rounded-xl md:w-auto md:h-[400px] object-cover" src="./assets/img/DSC03968.jpg">
-                <div class="flex flex-col justify-center items-center text-center">
-                    <p class="text-white font-bold text-2xl">Mais que um box, uma <span class="text-[#00d86d]">comunidade!</span></p>
+                <div id="horda-carousel" class="w-full md:w-[60%] md:h-[400px] relative overflow-hidden rounded-xl">
+                    
+                    <div id="carousel-slides" class="flex transition-transform duration-500 ease-in-out h-full">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02772.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02816.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02837.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02900.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02959.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03003.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03044.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03166.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03867.jpg">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03968.jpg">
+                    </div>
+
+                    <button onclick="prevSlide()" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-white bg-transparent p-2 rounded-full hover:bg-black/50 transition duration-300 z-10">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button onclick="nextSlide()" class="absolute top-1/2 right-3 transform -translate-y-1/2 text-white bg-transparent p-2 rounded-full hover:bg-black/50 transition duration-300 z-10">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col justify-center items-center text-center md:w-[40%]">
+                    <p class="text-white font-bold text-2xl lg:text-3xl">Mais que um box, uma <span class="text-[#00d86d]">comunidade!</span></p>
                     <p class="text-white font-semibold text-xl pb-5">Conheça o box da Horda Cross</p>
                     <a href="#sobre">
-                        <button class="w-[200px] h-[50px] text-[#2b2b2b] bg-[#00d86d] rounded-3xl font-bold text-lg transition duration-700 hover:scale-110 hover:opacity-50 hover:underline decoration-2">Ver Mais</button>
+                        <button class="w-[200px] h-[50px] text-[#2b2b2b] bg-[#00d86d] rounded-3xl font-bold text-lg transition duration-700 hover:scale-110 hover:opacity-90 hover:underline decoration-2 hover:shadow-lg">Ver Mais</button>
                     </a>
                 </div>
             </div>
         </section>
 
-        <section id="sobre" class="flex flex-col items-center">
+        <section id="sobre" class="flex flex-col items-center px-5">
             <p class="text-3xl font-bold p-5 text-center">Sobre nós</p>
-            <div class="text-center text-xl font-medium max-w-4xl">
+            <div class="text-center text-lg md:text-xl font-medium max-w-4xl">
                 <p>Mais do que um box, somos uma comunidade. Acreditamos que o CrossFit é a chave para superar barreiras e que a jornada é tão importante quanto o destino. No Horda Cross, você não apenas treina o corpo, mas também fortalece a mente, superando seus próprios limites a cada dia.</p>
             </div>
         </section>
 
-        <section class="flex flex-col items-center">
+        <section class="flex flex-col items-center px-5">
             <p class="text-3xl font-bold p-5 text-center">Nosso coach</p>
-            <div class="bg-white w-[800px] p-8 rounded-xl shadow-lg flex flex-col items-center text-center gap-5 group hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-white w-full max-w-3xl md:max-w-[800px] p-8 rounded-xl shadow-lg flex flex-col items-center text-center gap-5 group hover:shadow-xl transition-shadow duration-300">
                 <div class="flex-shrink-0">
-                    <img src="./assets/img/coach_lucasnicacio.png" class="w-[180px] h-[180px] rounded-full object-cover border-4 border-white">
+                    <img src="./assets/img/coach_lucasnicacio.png" class="w-[180px] h-[180px] rounded-full object-cover shadow-lg">
                 </div>
                 
                 <p class="text-lg font-medium">
-                    Conheça o Coach Lucas Nicacio, com mais de 7 anos de experiência em CrossFit e certificação Level 1. Ele é apaixonado por transformar vidas e te guiará em cada WOD, garantindo segurança e evolução constante.
+                    Conheça o **Coach Lucas Nicacio**, com mais de 7 anos de experiência em CrossFit e certificação Level 1. Ele é apaixonado por transformar vidas e te guiará em cada WOD, garantindo segurança e evolução constante.
                 </p>
             </div>
         </section>
 
         <section class="flex flex-col items-center p-5">
             <p class="text-3xl font-bold p-5 text-center">Treino Experimental</p>
-            <div class="bg-white w-[1200px] p-8 rounded-xl shadow-lg flex flex-row items-center text-center gap-20 group hover:shadow-xl transition-shadow duration-300">
-                <div class="flex flex-col items-center gap-5 md:w-1/2">
-                    <p class="text-lg font-medium max-w-3xl">Queremos que você experimente a energia do nosso box! Agende seu treino experimental gratuito e venha sentir na pele a diferença do CrossFit. Conheça nossa estrutura, nossos coaches e a comunidade que te incentivará a cada repetição. Não é preciso ter experiência, apenas vontade de se superar!</p>
+            <div class="bg-white w-full max-w-7xl p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center gap-10 md:gap-20 group hover:shadow-xl transition-shadow duration-300">
+                <div class="flex flex-col items-center text-center md:text-left gap-5 md:w-1/2 w-full">
+                    <p class="text-lg font-medium">Queremos que você experimente a energia do nosso box! **Agende seu treino experimental gratuito** e venha sentir na pele a diferença do CrossFit. Conheça nossa estrutura, nossos coaches e a comunidade que te incentivará a cada repetição. Não é preciso ter experiência, apenas vontade de se superar!</p>
                     <a href="https://agendamento.nextfit.com.br/6cf69e3f-677d-4d09-92e9-9395c4a11903">
-                        <button class="bg-[#00d86d] text-[#2b2b2b] font-bold py-3 px-6 rounded-3xl transition duration-300 hover:scale-110 hover:underline decoration-2">Agendar</button>
+                        <button class="bg-[#00d86d] text-[#2b2b2b] font-bold py-3 px-8 rounded-3xl transition duration-300 hover:scale-110 hover:underline decoration-2 hover:shadow-lg">Agendar Agora</button>
                     </a>
                 </div>
-                <div class="relative w-full max-w-xl h-[300px] flex justify-center items-center md:w-1/2">
-                    <div class="bg-[#2b2b2b] absolute top-0 right-0 w-[280px] p-6 rounded-3xl border-l border-b border-white shadow-lg z-10 transition hover:scale-105 duration-300">
-                        <p class="text-left text-2xl text-white font-semibold">Monalysa Calou</p>
+                
+                <div class="flex flex-col items-center space-y-4 w-full max-w-md md:w-1/2 mt-10 md:mt-0 md:relative md:h-[350px]">
+                    
+                    <div class="bg-[#2b2b2b] w-full max-w-[280px] p-4 rounded-3xl shadow-lg z-10 transition duration-300 hover:scale-105 hover:shadow-xl md:absolute md:top-10 md:right-0">
+                        <p class="text-left text-xl text-white font-semibold">Monalysa Calou</p>
                         <div class="flex items-center space-x-1 py-1">
                             <i class="bi bi-star-fill text-[#00d86d]"></i>
                             <i class="bi bi-star-fill text-[#00d86d]"></i>
@@ -86,8 +128,9 @@
                         </div>
                         <p class="text-left text-sm font-light text-white mt-2">Estou amando, ambiente aconchegante, pessoas receptivas e acolhedoras.</p>
                     </div>
-                    <div class="bg-[#2b2b2b] absolute bottom-0 left-0 w-[380px] p-6 rounded-3xl shadow-lg z-0 transition hover:scale-105 duration-300">
-                        <p class="text-left text-2xl text-white font-semibold">William K</p>
+                    
+                    <div class="bg-[#2b2b2b] w-full max-w-[320px] p-4 rounded-3xl shadow-lg z-0 transition duration-300 hover:scale-105 hover:shadow-xl md:absolute md:bottom-0 md:left-0">
+                        <p class="text-left text-xl text-white font-semibold">William K</p>
                         <div class="flex items-center space-x-1 py-1">
                             <i class="bi bi-star-fill text-[#00d86d]"></i>
                             <i class="bi bi-star-fill text-[#00d86d]"></i>
@@ -103,8 +146,8 @@
 
         <section class="flex flex-col items-center p-5">
             <p class="text-3xl font-bold p-5 text-center">Horários e Localização</p>
-            <div class="flex flex-col md:flex-row items-start md:items-start justify-center gap-10 w-full">
-                <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center text-center md:w-1/2">
+            <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-10 w-full max-w-5xl">
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center w-full md:w-1/2">
                     <p class="text-xl font-bold">Horários de Treinos:</p>
                     <p class="text-lg font-medium mt-2">
                         **Segunda a Sexta:** 6h | 7h | 8h | 12h | 17h | 18h | 19h | 20h | 21h<br>
@@ -112,61 +155,57 @@
                         **Domingo:** Fechado
                     </p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center text-center md:w-1/2">
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center w-full md:w-1/2">
                     <p class="text-xl font-bold">Nossa Localização:</p>
                     <p class="text-lg font-medium mt-2">Avenida Virgílio Távora, 509, Juazeiro do Norte - CE</p>
-                    <iframe class="h-[200px] w-full rounded-md mt-4" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.265527088966!2d-39.30047149999999!3d-7.2105203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a17946cd38b2fb%3A0xa45cedeb31091d61!2sHorda%20Cross!5e0!3m2!1spt-BR!2sbr!4v1758747561112!5m2!1spt-BR!2sbr" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe class="h-[200px] w-full rounded-md mt-4" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.133288151322!2d-39.40056972584144!3d-7.228966092770878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a1811e9f1a238b%3A0xc3f1f3e79207e77b!2sAv.%20Virg%C3%ADlio%20T%C3%A1vora%2C%20509%20-%20Lagoa%20Seca%2C%20Juazeiro%20do%20Norte%20-%20CE%2C%2063040-050!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </section>
 
-        <section id="planos-mensais" class="flex flex-col m-10 items-center justify-center">
-            <p class="text-3xl font-bold">Venha treinar no melhor box do Cariri</p>
-            <p class="text-xl font-medium">Veja os melhores preços e planos para você!</p>
-            <div class="flex flex-row gap-40 p-10">
-                <div class="bg-[#2b2b2b] w-[330px] h-[400px] flex flex-col items-center text-white rounded-xl">
+        <section id="planos-mensais" class="flex flex-col m-5 items-center justify-center">
+            <p class="text-3xl font-bold text-center">Venha treinar no melhor box do Cariri</p>
+            <p class="text-xl font-medium text-center">Veja os melhores preços e planos para você!</p>
+            
+            <div class="flex flex-col lg:flex-row gap-5 lg:gap-40 p-5 md:p-10 w-full max-w-6xl justify-center items-center">
+                <div class="bg-[#2b2b2b] w-full max-w-sm h-[400px] flex flex-col items-center text-white rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]">
                     <p class="p-3 font-semibold text-xl">Plano 1</p>
-                    <p class="pb-10 p-3 font-light text-left">Descrição</p>
+                    <p class="pb-10 p-3 font-light text-left w-full text-center">Descrição do Plano 1, seus benefícios e duração.</p>
                     <p class="font-light text-sm italic">A partir de</p>
                     <p class="font-bold text-3xl pb-[60px]">R$ 00,00</p>
-                    <button class="bg-[#00d86d] text-[#2b2b2b] w-[200px] h-[50px] rounded-3xl font-bold text-lg transition duration-300 hover:scale-105">Contratar</button>
+                    <button class="bg-[#00d86d] text-[#2b2b2b] w-[200px] h-[50px] rounded-3xl font-bold text-lg transition duration-300 hover:scale-105 hover:shadow-lg">Contratar</button>
                 </div>
-                <div class="bg-[#2b2b2b] w-[330px] h-[400px] flex flex-col items-center text-white rounded-xl">
+                <div class="bg-[#2b2b2b] w-full max-w-sm h-[400px] flex flex-col items-center text-white rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]">
                     <p class="p-3 font-semibold text-xl">Plano 2</p>
-                    <p class="pb-10 p-3 font-light text-left">Descrição</p>
+                    <p class="pb-10 p-3 font-light text-left w-full text-center">Descrição do Plano 2, seus benefícios e duração.</p>
                     <p class="font-light text-sm italic">A partir de</p>
                     <p class="font-bold text-3xl pb-[60px]">R$ 00,00</p>
-                    <button class="bg-[#00d86d] text-[#2b2b2b] w-[200px] h-[50px] rounded-3xl font-bold text-lg transition duration-300 hover:scale-105">Contratar</button>
+                    <button class="bg-[#00d86d] text-[#2b2b2b] w-[200px] h-[50px] rounded-3xl font-bold text-lg transition duration-300 hover:scale-105 hover:shadow-lg">Contratar</button>
                 </div>
             </div>
         </section>
 
-        <section id="contatos" class="flex flex-col m-10 items-center justify-center">
-            <p class="text-3xl font-bold text-center">Seu próximo nível começa <span class="text-[#00d86d]">aqui</span>
-            </p>
-            <p class="text-3xl font-bold text-center pb-10">Entre em contato e <span class="text-[#00d86d]">agende sua
-                        visita</span></p>
-            <div class="bg-[#2b2b2b] w-[930px] h-[430px] rounded-3xl flex flex-row justify-around items-center">
-                <div class="bg-[#333] w-[330px] h-[330px] rounded-3xl flex flex-col items-center justify-around">
-                    <div
-                        class="bg-gradient-to-br from-[#9F36B3] via-[#E43E5E] to-[#FECB68] rounded-full w-20 h-20  flex items-center justify-center">
+        <section id="contatos" class="flex flex-col m-5 items-center justify-center">
+            <p class="text-3xl font-bold text-center">Seu próximo nível começa <span class="text-[#00d86d]">aqui</span></p>
+            <p class="text-3xl font-bold text-center pb-10">Entre em contato e <span class="text-[#00d86d]">agende sua visita</span></p>
+            
+            <div class="bg-[#2b2b2b] w-full max-w-4xl p-8 rounded-3xl flex flex-col md:flex-row justify-around items-center gap-8 md:gap-0">
+                <div class="bg-[#333] w-full max-w-[330px] h-[330px] rounded-3xl flex flex-col items-center justify-around p-4">
+                    <div class="bg-gradient-to-br from-[#9F36B3] via-[#E43E5E] to-[#FECB68] rounded-full w-20 h-20 flex items-center justify-center">
                         <i class="bi bi-instagram text-white text-5xl"></i>
                     </div>
-                    <p class="text-center text-white text-xl font-semibold">Acompanhe o nosso centro<br> de treinamento atráves do nosso Instagram</p>
-                    <a href="https://www.instagram.com/hordacross/"> 
-                        <button
-                            class="bg-gradient-to-br from-[#9F36B3] via-[#E43E5E] to-[#FECB68] text-white w-[140px] h-[50px] rounded-3xl font-semibold text-center transition duration-300 hover:scale-105 hover:shadow-lg">Instagram</button>
+                    <p class="text-center text-white text-xl font-semibold">Acompanhe nosso centro<br> de treinamento no Instagram</p>
+                    <a href="https://www.instagram.com/hordacross/" class="w-full flex justify-center"> 
+                        <button class="bg-gradient-to-br from-[#9F36B3] via-[#E43E5E] to-[#FECB68] text-white w-[140px] h-[50px] rounded-3xl font-semibold transition duration-300 hover:scale-105 hover:shadow-lg">Instagram</button>
                     </a>
                 </div>
-                <div class="bg-[#333] w-[330px] h-[330px] rounded-3xl flex flex-col items-center justify-around">
-                    <div class="bg-[#0dc043] rounded-full w-20 h-20  flex items-center justify-center">
+                <div class="bg-[#333] w-full max-w-[330px] h-[330px] rounded-3xl flex flex-col items-center justify-around p-4">
+                    <div class="bg-[#0dc043] rounded-full w-20 h-20 flex items-center justify-center">
                         <i class="bi bi-whatsapp text-white text-5xl"></i>
                     </div>
-                    <p class="text-center text-white text-xl font-semibold">Entre em contato atráves
-                        <br>do nosso Whatsapp!
-                    </p>
-                    <a href="https://api.whatsapp.com/send/?phone=5588997313839&text&type=phone_number&app_absent=0">
-                        <button class="bg-[#0dc043] text-white w-[140px] h-[50px] rounded-3xl font-semibold text-center transition duration-300 hover:scale-105 hover:shadow-lg">Mensagem</button>
+                    <p class="text-center text-white text-xl font-semibold">Entre em contato através<br>do nosso Whatsapp!</p>
+                    <a href="https://api.whatsapp.com/send/?phone=5588997313839&text&type=phone_number&app_absent=0" class="w-full flex justify-center">
+                        <button class="bg-[#0dc043] text-white w-[140px] h-[50px] rounded-3xl font-semibold transition duration-300 hover:scale-105 hover:shadow-lg">Mensagem</button>
                     </a>
                 </div>
             </div>
@@ -174,7 +213,7 @@
 
     </main>
 
-    <footer class="bg-[#2b2b2b] p-8">
+    <footer class="bg-[#2b2b2b] p-8 mt-10">
         <div class="flex flex-col items-center text-center">
             <p class="text-white font-bold text-lg mb-2">HORDA Cross</p>
             <p class="text-white text-sm">Avenida Virgílio Távora, 509, Juazeiro do Norte - CE</p>
@@ -183,5 +222,6 @@
         <p class="text-center text-[#827F7F] text-sm">© 2025 - Todos os direitos reservados</p>
     </footer>
 
+    <script src="script/main.js"></script>
 </body>
 </html>
