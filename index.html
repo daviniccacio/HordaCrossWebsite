@@ -16,21 +16,21 @@
 </head>
 <body class="font-['Poppins'] bg-gray-100">
 
-    <header class="bg-white flex flex-row items-center justify-between gap-10 p-5 h-[75px] pr-10 shadow-xl 
-                transition duration-300 transform fixed top-0 w-full z-[100]">
+    <header class="bg-white flex flex-row items-center justify-between gap-4 p-4 h-[75px] pr-4 shadow-xl 
+                 transition duration-300 transform fixed top-0 w-full z-[100] sm:p-5 sm:pr-10 sm:gap-10">
         <img src="./assets/img/logohorda.png" class="w-[50px] h-[50px]">
         
         <nav class="hidden md:flex flex-row justify-end gap-5 lg:gap-10 text-sm font-light">
-            <a href="#inicio" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+            <a href="#inicio" class="transition duration-500 transform hover:text-[#00d86d]">
                 Início
             </a>
-            <a href="#sobre" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+            <a href="#sobre" class="transition duration-500 transform hover:text-[#00d86d]">
                 Sobre
             </a>
-            <a href="#planos-mensais" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+            <a href="#planos-mensais" class="transition duration-500 transform hover:text-[#00d86d]">
                 Planos
             </a>
-            <a href="#contatos" class="transition duration-500 hover:scale-125 hover:underline underline-offset-2">
+            <a href="#contatos" class="transition duration-500 transform hover:text-[#00d86d]">
                 Contato
             </a>
         </nav>
@@ -48,14 +48,17 @@
             <a href="#contatos" class="block py-2 hover:bg-gray-100 transition duration-300">Contato</a>
         </nav>
     </div>
+    
+    <div class="h-[20px]"></div> 
 
-    <main class="space-y-12 my-10 **pt-[75px]**">
+    <main class="smax-w-7xl mx-auto">
 
-        <section id="inicio" class="flex justify-center p-20">
-            <div class="bg-[#2b2b2b] w-full max-w-6xl rounded-xl p-8 flex flex-col md:flex-row justify-around items-center gap-10">
-                <div id="horda-carousel" class="w-full md:w-[60%] md:h-[400px] relative overflow-hidden rounded-xl">
+        <section id="inicio" class="flex justify-center p-5 sm:p-10 lg:p-20">
+            <div class="bg-[#2b2b2b] w-full rounded-xl p-6 flex flex-col md:flex-row justify-around items-center gap-8 sm:p-8 sm:gap-10">
+                <div id="horda-carousel" class="w-full md:w-[60%] md:h-[400px] h-[250px] relative overflow-hidden rounded-xl">
                     
                     <div id="carousel-slides" class="flex transition-transform duration-500 ease-in-out h-full">
+                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03968.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02772.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02816.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02837.jpg">
@@ -65,7 +68,6 @@
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03044.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03166.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03867.jpg">
-                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03968.jpg">
                     </div>
 
                     <button onclick="prevSlide()" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-white bg-transparent p-2 rounded-full hover:bg-black/50 transition duration-300 z-10">
@@ -85,29 +87,29 @@
             </div>
         </section>
 
-        <section id="sobre" class="flex flex-col items-center px-5">
+        <section id="sobre" class="flex flex-col items-center px-5 sm:px-10">
             <p class="text-3xl font-bold p-5 text-center">Sobre nós</p>
             <div class="text-center text-lg md:text-xl font-medium max-w-4xl">
                 <p>Mais do que um box, somos uma comunidade. Acreditamos que o CrossFit é a chave para superar barreiras e que a jornada é tão importante quanto o destino. No Horda Cross, você não apenas treina o corpo, mas também fortalece a mente, superando seus próprios limites a cada dia.</p>
             </div>
         </section>
 
-        <section class="flex flex-col items-center px-5">
+        <section class="flex flex-col items-center px-5 sm:px-10">
             <p class="text-3xl font-bold p-5 text-center">Nosso coach</p>
-            <div class="bg-white w-full max-w-3xl md:max-w-[800px] p-8 rounded-xl shadow-lg flex flex-col items-center text-center gap-5 group hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-[#2b2b2b] w-full max-w-3xl md:max-w-[800px] p-8 rounded-xl shadow-lg flex flex-col items-center text-center gap-5 group hover:shadow-xl transition-shadow duration-300">
                 <div class="flex-shrink-0">
                     <img src="./assets/img/coach_lucasnicacio.png" class="w-[180px] h-[180px] rounded-full object-cover shadow-lg">
                 </div>
                 
-                <p class="text-lg font-medium">
+                <p class="text-white text-lg font-medium">
                     Conheça o nosso <span class="font-semibold">Coach Lucas Nicacio</span>, com mais de 7 anos de experiência em CrossFit e certificação Level 1. Ele é apaixonado por transformar vidas e te guiará em cada WOD, garantindo segurança e evolução constante.
                 </p>
             </div>
         </section>
 
-        <section class="flex flex-col items-center p-5">
+        <section class="flex flex-col items-center p-5 sm:p-10">
             <p class="text-3xl font-bold p-5 text-center">Treino Experimental</p>
-            <div class="bg-[#2b2b2b] w-full max-w-7xl p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center gap-10 md:gap-20 group hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-[#2b2b2b] w-full max-w-7xl p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-center gap-8 sm:p-8 sm:gap-10 md:gap-20 group hover:shadow-xl transition-shadow duration-300">
                 <div class="flex flex-col items-center text-center md:text-left gap-5 md:w-1/2 w-full">
                     <p class="text-lg font-medium text-white text-center">Queremos que você experimente a energia do nosso box! Agende seu treino experimental gratuito e venha sentir na pele a diferença do CrossFit. Conheça nossa estrutura, nossos coaches e a comunidade que te incentivará a cada repetição. Não é preciso ter experiência, apenas vontade de se superar!</p>
                     <a href="https://agendamento.nextfit.com.br/6cf69e3f-677d-4d09-92e9-9395c4a11903">
@@ -144,34 +146,61 @@
             </div>
         </section>
 
-        <section class="flex flex-col items-center p-5">
+        <section class="flex flex-col items-center p-5 sm:p-10">
             <p class="text-3xl font-bold p-5 text-center">Horários e Localização</p>
-            <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-10 w-[1150px]">
-                <div class="bg-[#2b2b2b] p-6 rounded-xl shadow-lg flex flex-col items-center text-center w-[650px] md:w-1/2">
+            <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-10 w-full max-w-5xl">
+                
+                <div class="bg-[#2b2b2b] p-6 rounded-xl shadow-lg flex flex-col items-center text-center w-full md:w-1/2 text-white">
                     <p class="text-xl font-bold text-[#00d86d]">Horários de Treinos:</p>
-                    <p class="text-lg text-white mt-[75px] italic">
-                        <span class="font-semibold not-italic text-[#00d86d]">Segunda a Sexta:</span> 6h30 | 7h30 | 12h15 | 17h | 18h | 19h<br>
-                        <span class="font-semibold not-italic text-[#00d86d]">Sábado:</span> 8h30<br>
-                        <span class="font-semibold not-italic text-[#00d86d]">Domingo:</span> Fechado
-                    </p>
+                    <div class="overflow-x-auto w-full">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="px-3 py-3">Segunda</th>
+                                    <th scope="col" class="px-3 py-3">Terça</th>
+                                    <th scope="col" class="px-3 py-3">Quarta</th>
+                                    <th scope="col" class="px-3 py-3">Quinta</th>
+                                    <th scope="col" class="px-3 py-3">Sexta</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-x divide-gray-700">
+                                <tr>
+                                    <td>6h30</td>
+                                    <td>6h30</td>
+                                    <td>6h30</td>
+                                    <td>6h30</td>
+                                    <td>6h30</td>
+                                </tr>
+                                <tr>
+                                    <td>7h30</td>
+                                    <td>7h30</td>
+                                    <td>7h30</td>
+                                    <td>7h30</td>
+                                    <td>7h30</td>   
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="bg-[#2b2b2b] p-6 rounded-xl shadow-lg flex flex-col items-center text-center w-[650px] md:w-1/2">
+                
+                <div class="bg-[#2b2b2b] p-6 rounded-xl shadow-lg flex flex-col items-center text-center w-full md:w-1/2 text-white">
                     <p class="text-xl text-[#00d86d] font-bold">Nossa Localização:</p>
                     <p class="text-lg text-white font-medium mt-2">Avenida Virgílio Távora, 509, Juazeiro do Norte - CE</p>
                     <iframe class="h-[200px] w-full shadow-xl rounded-md mt-4" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.133288151322!2d-39.40056972584144!3d-7.228966092770878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a1811e9f1a238b%3A0xc3f1f3e79207e77b!2sAv.%20Virg%C3%ADlio%20T%C3%A1vora%2C%20509%20-%20Lagoa%20Seca%2C%20Juazeiro%20do%20Norte%20-%20CE%2C%2063040-050!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
+                
             </div>
         </section>
 
-        <section id="planos-mensais" class="flex flex-col m-5 items-center justify-center">
+        <section id="planos-mensais" class="flex flex-col m-5 items-center justify-center sm:m-10">
             <p class="text-3xl font-bold text-center">Venha treinar no melhor box do Cariri</p>
             <p class="text-xl font-medium text-center pb-5">Veja os melhores preços e planos para você!</p>
             
-            <div class="bg-[#2b2b2b] w-full max-w-4xl p-8 rounded-xl shadow-2xl flex flex-col items-center text-white">
+            <div class="bg-[#2b2b2b] w-full max-w-4xl p-4 rounded-xl shadow-2xl flex flex-col items-center text-white sm:p-8">
                 <p class="text-2xl font-bold text-[#00d86d] mb-6">Todas as opções de planos</p>
                 
                 <div class="overflow-x-auto w-full">
-                    <table class="min-w-full divide-y divide-gray-700">        
+                    <table class="min-w-full divide-y divide-gray-700">
                         <thead class="bg-[#333]">
                             <tr>
                                 <th scope="col" class="px-3 py-3 text-left text-sm font-semibold text-white uppercase tracking-wider">
@@ -188,13 +217,13 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-700">                         
+                        <tbody class="divide-y divide-gray-700">
                             <tr class="bg-[#2b2b2b] hover:bg-gray-700 transition duration-150">
                                 <td class="px-3 py-4 whitespace-nowrap text-lg font-medium text-left">Mensais</td>
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center">R$ 135,00</td>
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center">R$ 150,00</td>
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center font-bold text-[#00d86d]">R$ 195,00</td>
-                            </tr>                          
+                            </tr>
                             <tr class="bg-[#333] hover:bg-gray-700 transition duration-150">
                                 <td class="px-3 py-4 whitespace-nowrap text-lg font-medium text-left">Trimestrais</td>
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center">R$ 125,00</td>
@@ -212,7 +241,7 @@
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center">R$ 115,00</td>
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center">R$ 130,00</td>
                                 <td class="px-3 py-4 whitespace-nowrap text-lg text-center font-bold text-[#00d86d]">R$ 175,00</td>
-                            </tr>                            
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -229,7 +258,7 @@
             </div>
         </section>
 
-        <section id="contatos" class="flex flex-col m-5 items-center justify-center">
+        <section id="contatos" class="flex flex-col m-5 items-center justify-center sm:m-10">
             <p class="text-3xl font-bold text-center">Seu próximo nível começa <span class="text-[#00d86d]">aqui</span></p>
             <p class="text-3xl font-bold text-center pb-10">Entre em contato e <span class="text-[#00d86d]">agende sua visita</span></p>
             

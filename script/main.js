@@ -25,7 +25,7 @@ window.prevSlide = function () {
 }
 
 // Opcional: Adicionar Autoplay (se quiser que troque automaticamente a cada 5 segundos)
-// setInterval(window.nextSlide, 5000); 
+setInterval(window.nextSlide, 5000); 
 
 // Navegação:
 const header = document.querySelector('header');
@@ -68,3 +68,80 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Menu Hamburguer: 
+
+const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+
+// Abre/Fecha o menu ao clicar no botão
+menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+});
+
+// Fecha o menu ao clicar em qualquer link (para rolagem suave)
+const mobileLinks = mobileMenu.querySelectorAll('a');
+
+mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+    });
+});
+
+// ScrollSpy: 
+// 1. Seleciona todos os links de navegação no header
+const navLinks = document.querySelectorAll('header nav a');
+
+// 2. Seleciona todas as seções do corpo da página com IDs
+// Usaremos as seções com IDs para mapear a posição
+const sections = document.querySelectorAll('section[id]');
+
+// 3. Função para remover o destaque de todos os links
+function removeActiveClass() {
+    navLinks.forEach(link => {
+        // Remove as classes de destaque do Tailwind
+        link.classList.remove('underline', 'underline-offset-2', 'font-bold', 'text-[#00d86d]', 'scale-125');
+        // Adiciona as classes padrão que estavam no seu HTML
+        link.classList.add('font-light');
+    });
+}
+
+// 4. Função principal que checa a posição de rolagem
+function scrollSpy() {
+    // Pega a posição atual de rolagem do topo da janela
+    const currentScroll = window.scrollY; 
+    
+    // Define uma margem de segurança (offset) para compensar a altura do header fixo (75px)
+    // Se você usou p-20 (80px), um offset de 100px é seguro
+    const offset = 100;
+
+    // Itera sobre cada seção para verificar se está visível
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - offset;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        // Verifica se a posição atual de rolagem está dentro dos limites da seção
+        if (currentScroll >= sectionTop && currentScroll < sectionBottom) {
+            
+            // Se encontrou a seção ativa, remove o destaque de tudo...
+            removeActiveClass();
+            
+            // ...e aplica o destaque apenas ao link correspondente
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    // Adiciona as classes de destaque
+                    link.classList.add('underline', 'underline-offset-2', 'font-bold', 'text-[#00d86d]', 'scale-125');
+                    // Remove as classes padrão
+                    link.classList.remove('font-light');
+                }
+            });
+        }
+    });
+}
+
+// 5. Adiciona o ouvinte de evento para executar a função sempre que o usuário rolar
+window.addEventListener('scroll', scrollSpy);
+
+// 6. Executa a função uma vez no carregamento para checar o estado inicial (caso a página recarregue na metade)
+window.addEventListener('load', scrollSpy);
