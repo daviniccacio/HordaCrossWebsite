@@ -1,55 +1,94 @@
 // Carrossel: 
-const slidesContainer = document.getElementById('carousel-slides');
+const carousel = document.getElementById('horda-carousel');
+const carouselSlides = document.getElementById('carousel-slides');
+// Usamos querySelectorAll para garantir que funcione se o HTML tiver mudado
+const slides = carouselSlides ? carouselSlides.querySelectorAll('img') : [];
+const prevButton = document.getElementById('prev-slide');
+const nextButton = document.getElementById('next-slide');
 
-if (slidesContainer) {
-    const slides = slidesContainer.querySelectorAll('img'); 
+if (carousel && slides.length > 0) {
+    let currentIndex = 0;
     const totalSlides = slides.length;
-    let currentSlide = 0;
-    let intervalTime = 5000; // Troca a cada 5 segundos
-    let autoScrollInterval;
+    const AUTOPLAY_DELAY = 5000; // 5 segundos
+    let autoplayInterval;
+    let resetAutoplayTimeout; // Variável para controlar o timeout de reinício
 
-    function goToSlide(index) {
-        // Garante que o índice esteja dentro dos limites (looping infinito)
-        if (index < 0) {
-            currentSlide = totalSlides - 1;
-        } else if (index >= totalSlides) {
-            currentSlide = 0;
-        } else {
-            currentSlide = index;
+    // 1. Função principal para atualizar a posição
+    function updateCarousel() {
+        const offset = -currentIndex * 100;
+        carouselSlides.style.transform = `translateX(${offset}%)`;
+    }
+
+    // 2. Lógica de navegação
+    function goToNextSlide() {
+        currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
+        updateCarousel();
+    }
+
+    function goToPrevSlide() {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
+        updateCarousel();
+    }
+
+    // 3. Controle de Autoplay
+    function startAutoplay() {
+        // Limpa qualquer intervalo existente antes de criar um novo
+        clearInterval(autoplayInterval);
+        autoplayInterval = setInterval(goToNextSlide, AUTOPLAY_DELAY);
+    }
+
+    // 4. Funcao de Interacao Manual (CHAVE DA SOLUÇÃO)
+    function handleManualInteraction(action) {
+        // 1. Limpa o autoplay atual
+        clearInterval(autoplayInterval);
+
+        // 2. Limpa o timeout de reinício, se houver um pendente
+        clearTimeout(resetAutoplayTimeout);
+
+        // 3. Executa a ação de navegação (próximo ou anterior)
+        action();
+
+        // 4. Cria um NOVO timeout para reiniciar o autoplay após o delay
+        resetAutoplayTimeout = setTimeout(startAutoplay, AUTOPLAY_DELAY);
+    }
+
+    // --- Eventos de Clique (Setas) ---
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
+            handleManualInteraction(goToPrevSlide);
+        });
+    }
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            handleManualInteraction(goToNextSlide);
+        });
+    }
+
+    // --- Eventos de Swipe (Mobile/Touch) ---
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const swipeThreshold = 50;
+
+    carousel.addEventListener('touchstart', (e) => {
+        // Captura o ponto de início do toque
+        touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    carousel.addEventListener('touchend', (e) => {
+        // Captura o ponto final do toque
+        touchEndX = e.changedTouches[0].screenX;
+
+        // Processa o gesto
+        if (touchEndX < touchStartX - swipeThreshold) { // Swipe para a esquerda (Próximo)
+            handleManualInteraction(goToNextSlide);
+        } else if (touchEndX > touchStartX + swipeThreshold) { // Swipe para a direita (Anterior)
+            handleManualInteraction(goToPrevSlide);
         }
+    }, false);
 
-        const offset = currentSlide * -100;
-        slidesContainer.style.transform = `translateX(${offset}%)`;
-    }
-
-    // Funções de controle
-    function startAutoScroll() {
-        // Limpa o intervalo anterior antes de iniciar um novo
-        clearInterval(autoScrollInterval); 
-        autoScrollInterval = setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, intervalTime);
-    }
-
-    function stopAutoScroll() {
-        clearInterval(autoScrollInterval);
-    }
-    
-    // Funções acessíveis pelos botões HTML (Corrigido para parar/reiniciar)
-    window.nextSlide = function() {
-        stopAutoScroll(); 
-        goToSlide(currentSlide + 1);
-        startAutoScroll(); 
-    }
-
-    window.prevSlide = function() {
-        stopAutoScroll();
-        goToSlide(currentSlide - 1);
-        startAutoScroll();
-    }
-
-    // Inicia o carrossel automático
-    window.addEventListener('load', startAutoScroll);
+    // --- Inicialização do Carrossel ---
+    updateCarousel();
+    startAutoplay();
 }
 
 // Navegação:
@@ -58,18 +97,18 @@ let lastScrollY = window.scrollY;
 
 window.addEventListener('scroll', () => {
     const currentScrollY = window.scrollY;
-    
+
     // Se a rolagem for para baixo E já tiver passado da altura do topo (evita esconder no primeiro scroll)
     if (currentScrollY > lastScrollY && currentScrollY > 75) {
         // ROLAGEM PARA BAIXO: Esconde o header
-        header.classList.add('-translate-y-full'); 
-    } 
+        header.classList.add('-translate-y-full');
+    }
     // Se a rolagem for para cima OU se estiver no topo da página
     else if (currentScrollY < lastScrollY || currentScrollY === 0) {
         // ROLAGEM PARA CIMA / TOPO: Mostra o header
         header.classList.remove('-translate-y-full');
     }
-    
+
     lastScrollY = currentScrollY;
 });
 
@@ -134,8 +173,8 @@ function removeActiveClass() {
 // 4. Função principal que checa a posição de rolagem
 function scrollSpy() {
     // Pega a posição atual de rolagem do topo da janela
-    const currentScroll = window.scrollY; 
-    
+    const currentScroll = window.scrollY;
+
     // Define uma margem de segurança (offset) para compensar a altura do header fixo (75px)
     // Se você usou p-20 (80px), um offset de 100px é seguro
     const offset = 100;
@@ -148,10 +187,10 @@ function scrollSpy() {
 
         // Verifica se a posição atual de rolagem está dentro dos limites da seção
         if (currentScroll >= sectionTop && currentScroll < sectionBottom) {
-            
+
             // Se encontrou a seção ativa, remove o destaque de tudo...
             removeActiveClass();
-            
+
             // ...e aplica o destaque apenas ao link correspondente
             navLinks.forEach(link => {
                 if (link.getAttribute('href') === `#${sectionId}`) {
@@ -174,29 +213,29 @@ window.addEventListener('load', scrollSpy);
 // Loading nos botões:
 function addLoadingToButtons() {
     const actionButtons = document.querySelectorAll('a button');
-    
+
     actionButtons.forEach(button => {
         // Garante que o botão tenha posição relativa para o spinner
-        button.classList.add('relative'); 
-        
-        button.addEventListener('click', function(e) {
-            e.preventDefault(); 
-            
+        button.classList.add('relative');
+
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
             const buttonElement = this;
             const parentLink = buttonElement.closest('a');
 
             // Se já está carregando, ignora
-            if (buttonElement.classList.contains('loading')) return; 
+            if (buttonElement.classList.contains('loading')) return;
 
             // Adiciona a classe de loading e desabilita
             buttonElement.classList.add('loading');
             buttonElement.disabled = true;
-            
+
             const originalText = buttonElement.innerHTML;
-            
+
             // 1. Esconde o texto original
             buttonElement.innerHTML = `<span class="opacity-0">${originalText}</span>`;
-            
+
             // 2. Cria e adiciona o spinner
             const spinner = document.createElement('i');
             spinner.className = 'bi bi-arrow-clockwise animate-spin text-2xl absolute inset-0 flex items-center justify-center';
@@ -211,12 +250,12 @@ function addLoadingToButtons() {
                     if (isInternalLink) {
                         // Se for link interno (ex: #sobre), navegamos (rolamos)
                         window.location.href = parentLink.href;
-                        
+
                         // E restauramos o botão imediatamente, pois o site não saiu da página.
                         buttonElement.classList.remove('loading');
                         buttonElement.innerHTML = originalText;
                         buttonElement.disabled = false;
-                        
+
                     } else {
                         // Se for link externo (WhatsApp/Agendamento), navegamos e o browser fecha o spinner.
                         window.location.href = parentLink.href;
