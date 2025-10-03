@@ -1,270 +1,263 @@
-// Carrossel: 
-const carousel = document.getElementById('horda-carousel');
-const carouselSlides = document.getElementById('carousel-slides');
-// Usamos querySelectorAll para garantir que funcione se o HTML tiver mudado
-const slides = carouselSlides ? carouselSlides.querySelectorAll('img') : [];
-const prevButton = document.getElementById('prev-slide');
-const nextButton = document.getElementById('next-slide');
+// main.js
 
-if (carousel && slides.length > 0) {
-    let currentIndex = 0;
-    const totalSlides = slides.length;
-    const AUTOPLAY_DELAY = 5000; // 5 segundos
-    let autoplayInterval;
-    let resetAutoplayTimeout; // Variável para controlar o timeout de reinício
+document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Função principal para atualizar a posição
-    function updateCarousel() {
-        const offset = -currentIndex * 100;
-        carouselSlides.style.transform = `translateX(${offset}%)`;
-    }
+    // =======================================================
+    // I. CARROSSEL (SLIDESHOW) - INCLUINDO CORREÇÃO MOBILE/SWIPE
+    // =======================================================
+    const carousel = document.getElementById('horda-carousel');
+    const carouselSlides = document.getElementById('carousel-slides');
+    // Verifica se os elementos existem antes de prosseguir
+    const slides = carouselSlides ? carouselSlides.querySelectorAll('img') : [];
+    const prevButton = document.getElementById('prev-slide');
+    const nextButton = document.getElementById('next-slide');
 
-    // 2. Lógica de navegação
-    function goToNextSlide() {
-        currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
-        updateCarousel();
-    }
+    if (carousel && slides.length > 0) {
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        const AUTOPLAY_DELAY = 5000; // 5 segundos
+        const SWIPE_THRESHOLD = 50; // Mínimo de pixels para ser considerado um swipe
+        
+        let autoplayInterval;
+        let resetAutoplayTimeout;
+        
+        let touchStartX = 0;
+        let touchCurrentX = 0;
+        let isSwiping = false; 
 
-    function goToPrevSlide() {
-        currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
-        updateCarousel();
-    }
-
-    // 3. Controle de Autoplay
-    function startAutoplay() {
-        // Limpa qualquer intervalo existente antes de criar um novo
-        clearInterval(autoplayInterval);
-        autoplayInterval = setInterval(goToNextSlide, AUTOPLAY_DELAY);
-    }
-
-    // 4. Funcao de Interacao Manual (CHAVE DA SOLUÇÃO)
-    function handleManualInteraction(action) {
-        // 1. Limpa o autoplay atual
-        clearInterval(autoplayInterval);
-
-        // 2. Limpa o timeout de reinício, se houver um pendente
-        clearTimeout(resetAutoplayTimeout);
-
-        // 3. Executa a ação de navegação (próximo ou anterior)
-        action();
-
-        // 4. Cria um NOVO timeout para reiniciar o autoplay após o delay
-        resetAutoplayTimeout = setTimeout(startAutoplay, AUTOPLAY_DELAY);
-    }
-
-    // --- Eventos de Clique (Setas) ---
-    if (prevButton) {
-        prevButton.addEventListener('click', () => {
-            handleManualInteraction(goToPrevSlide);
-        });
-    }
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            handleManualInteraction(goToNextSlide);
-        });
-    }
-
-    // --- Eventos de Swipe (Mobile/Touch) ---
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const swipeThreshold = 50;
-
-    carousel.addEventListener('touchstart', (e) => {
-        // Captura o ponto de início do toque
-        touchStartX = e.changedTouches[0].screenX;
-    }, false);
-
-    carousel.addEventListener('touchend', (e) => {
-        // Captura o ponto final do toque
-        touchEndX = e.changedTouches[0].screenX;
-
-        // Processa o gesto
-        if (touchEndX < touchStartX - swipeThreshold) { // Swipe para a esquerda (Próximo)
-            handleManualInteraction(goToNextSlide);
-        } else if (touchEndX > touchStartX + swipeThreshold) { // Swipe para a direita (Anterior)
-            handleManualInteraction(goToPrevSlide);
+        // 1. Função principal para atualizar a posição
+        function updateCarousel() {
+            const offset = -currentIndex * 100;
+            carouselSlides.style.transform = `translateX(${offset}%)`;
+            carouselSlides.style.transition = 'transform 0.5s ease-in-out';
         }
-    }, false);
 
-    // --- Inicialização do Carrossel ---
-    updateCarousel();
-    startAutoplay();
-}
+        // 2. Lógica de navegação
+        function goToNextSlide() {
+            currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
+            updateCarousel();
+        }
 
-// Navegação:
-const header = document.querySelector('header');
-let lastScrollY = window.scrollY;
+        function goToPrevSlide() {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
+            updateCarousel();
+        }
 
-window.addEventListener('scroll', () => {
-    const currentScrollY = window.scrollY;
+        // 3. Controle de Autoplay
+        function startAutoplay() {
+            clearInterval(autoplayInterval);
+            autoplayInterval = setInterval(goToNextSlide, AUTOPLAY_DELAY);
+        }
 
-    // Se a rolagem for para baixo E já tiver passado da altura do topo (evita esconder no primeiro scroll)
-    if (currentScrollY > lastScrollY && currentScrollY > 75) {
-        // ROLAGEM PARA BAIXO: Esconde o header
-        header.classList.add('-translate-y-full');
-    }
-    // Se a rolagem for para cima OU se estiver no topo da página
-    else if (currentScrollY < lastScrollY || currentScrollY === 0) {
-        // ROLAGEM PARA CIMA / TOPO: Mostra o header
-        header.classList.remove('-translate-y-full');
-    }
+        // 4. Funcao de Interacao Manual (Controle de Parada/Reinício)
+        function handleManualInteraction(action) {
+            // Para o autoplay e o timer de reinício
+            clearInterval(autoplayInterval);
+            clearTimeout(resetAutoplayTimeout); 
+            action(); 
+            // Cria um NOVO timer para reiniciar o autoplay após o delay
+            resetAutoplayTimeout = setTimeout(startAutoplay, AUTOPLAY_DELAY);
+        }
 
-    lastScrollY = currentScrollY;
-});
-
-
-// Rolagem Suave: 
-// Adicione este bloco de código ao seu main.js
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault(); // Impede o salto instantâneo padrão
-
-        // Pega o destino (o ID da seção)
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-
-        if (targetElement) {
-            // Usa o método scrollIntoView para a rolagem suave
-            targetElement.scrollIntoView({
-                behavior: 'smooth'
+        // --- Eventos de Clique (Setas) ---
+        if (prevButton && nextButton) {
+            prevButton.addEventListener('click', () => {
+                handleManualInteraction(goToPrevSlide);
+            });
+            nextButton.addEventListener('click', () => {
+                handleManualInteraction(goToNextSlide);
             });
         }
-    });
-});
 
-// Menu Hamburguer: 
+        // --- Eventos de Swipe (Mobile/Touch) ---
+        
+        // touchstart: Marca o início do movimento
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchCurrentX = touchStartX;
+            isSwiping = false;
+            carouselSlides.style.transition = 'none'; // Desliga transição
+        }, {passive: true});
 
-const menuToggle = document.getElementById('menu-toggle');
-const mobileMenu = document.getElementById('mobile-menu');
+        // touchmove: Move o slide e previne a rolagem vertical
+        carousel.addEventListener('touchmove', (e) => {
+            touchCurrentX = e.changedTouches[0].screenX;
+            const deltaX = touchCurrentX - touchStartX;
+            const deltaY = e.changedTouches[0].screenY - e.changedTouches[0].screenY; 
+            
+            // Verifica se o movimento é predominantemente horizontal
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+                e.preventDefault(); 
+                isSwiping = true;
+                const offset = -currentIndex * carousel.offsetWidth + deltaX;
+                carouselSlides.style.transform = `translateX(${offset}px)`;
+            }
+        }, {passive: false});
 
-// Abre/Fecha o menu ao clicar no botão
-menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-});
-
-// Fecha o menu ao clicar em qualquer link (para rolagem suave)
-const mobileLinks = mobileMenu.querySelectorAll('a');
-
-mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-    });
-});
-
-// ScrollSpy: 
-// 1. Seleciona todos os links de navegação no header
-const navLinks = document.querySelectorAll('header nav a');
-
-// 2. Seleciona todas as seções do corpo da página com IDs
-// Usaremos as seções com IDs para mapear a posição
-const sections = document.querySelectorAll('section[id]');
-
-// 3. Função para remover o destaque de todos os links
-function removeActiveClass() {
-    navLinks.forEach(link => {
-        // Remove as classes de destaque do Tailwind
-        link.classList.remove('underline', 'underline-offset-2', 'font-bold', 'text-[#00d86d]', 'scale-125');
-        // Adiciona as classes padrão que estavam no seu HTML
-        link.classList.add('font-light');
-    });
-}
-
-// 4. Função principal que checa a posição de rolagem
-function scrollSpy() {
-    // Pega a posição atual de rolagem do topo da janela
-    const currentScroll = window.scrollY;
-
-    // Define uma margem de segurança (offset) para compensar a altura do header fixo (75px)
-    // Se você usou p-20 (80px), um offset de 100px é seguro
-    const offset = 100;
-
-    // Itera sobre cada seção para verificar se está visível
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - offset;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-
-        // Verifica se a posição atual de rolagem está dentro dos limites da seção
-        if (currentScroll >= sectionTop && currentScroll < sectionBottom) {
-
-            // Se encontrou a seção ativa, remove o destaque de tudo...
-            removeActiveClass();
-
-            // ...e aplica o destaque apenas ao link correspondente
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    // Adiciona as classes de destaque
-                    link.classList.add('underline', 'underline-offset-2', 'font-bold', 'text-[#00d86d]', 'scale-125');
-                    // Remove as classes padrão
-                    link.classList.remove('font-light');
+        // touchend: Decisão de navegação
+        carousel.addEventListener('touchend', () => {
+            const deltaX = touchCurrentX - touchStartX;
+            
+            if (isSwiping) {
+                if (deltaX < -SWIPE_THRESHOLD) { 
+                    handleManualInteraction(goToNextSlide);
+                } else if (deltaX > SWIPE_THRESHOLD) { 
+                    handleManualInteraction(goToPrevSlide);
+                } else {
+                    updateCarousel();
                 }
+            } else {
+                updateCarousel(); 
+            }
+            
+            touchStartX = 0;
+            touchCurrentX = 0;
+            isSwiping = false;
+        }, false);
+
+        // Inicialização do Carrossel
+        updateCarousel();
+        startAutoplay();
+    }
+
+
+    // =======================================================
+    // II. MENU MOBILE (HAMBURGUER)
+    // =======================================================
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
             });
+        });
+    }
+
+
+    // =======================================================
+    // III. NAV BAR (HEADER FIXO: ESCONDER/MOSTRAR)
+    // =======================================================
+    const header = document.querySelector('header');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY && currentScrollY > 75) {
+            header.classList.add('-translate-y-full'); // Esconde
         }
+        else if (currentScrollY < lastScrollY || currentScrollY === 0) {
+            header.classList.remove('-translate-y-full'); // Mostra
+        }
+
+        lastScrollY = currentScrollY;
     });
-}
 
-// 5. Adiciona o ouvinte de evento para executar a função sempre que o usuário rolar
-window.addEventListener('scroll', scrollSpy);
 
-// 6. Executa a função uma vez no carregamento para checar o estado inicial (caso a página recarregue na metade)
-window.addEventListener('load', scrollSpy);
-
-// Loading nos botões:
-function addLoadingToButtons() {
-    const actionButtons = document.querySelectorAll('a button');
-
-    actionButtons.forEach(button => {
-        // Garante que o botão tenha posição relativa para o spinner
-        button.classList.add('relative');
-
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            const buttonElement = this;
-            const parentLink = buttonElement.closest('a');
-
-            // Se já está carregando, ignora
-            if (buttonElement.classList.contains('loading')) return;
-
-            // Adiciona a classe de loading e desabilita
-            buttonElement.classList.add('loading');
-            buttonElement.disabled = true;
-
-            const originalText = buttonElement.innerHTML;
-
-            // 1. Esconde o texto original
-            buttonElement.innerHTML = `<span class="opacity-0">${originalText}</span>`;
-
-            // 2. Cria e adiciona o spinner
-            const spinner = document.createElement('i');
-            spinner.className = 'bi bi-arrow-clockwise animate-spin text-2xl absolute inset-0 flex items-center justify-center';
-            buttonElement.appendChild(spinner);
-
-            // 3. Lógica para LINKS INTERNOS (Começam com #) e LINKS EXTERNOS
-            if (parentLink && parentLink.href) {
-                // Checa se o link é interno (apenas um hash ou começa com #nome-secao)
-                const isInternalLink = parentLink.getAttribute('href').startsWith('#') && parentLink.hash.length > 0;
-
-                setTimeout(() => {
-                    if (isInternalLink) {
-                        // Se for link interno (ex: #sobre), navegamos (rolamos)
-                        window.location.href = parentLink.href;
-
-                        // E restauramos o botão imediatamente, pois o site não saiu da página.
-                        buttonElement.classList.remove('loading');
-                        buttonElement.innerHTML = originalText;
-                        buttonElement.disabled = false;
-
-                    } else {
-                        // Se for link externo (WhatsApp/Agendamento), navegamos e o browser fecha o spinner.
-                        window.location.href = parentLink.href;
-                        // Não restauramos, pois a página irá recarregar ou mudar.
-                    }
-                }, 250); // Tempo de feedback rápido
+    // =======================================================
+    // IV. ROLAGEM SUAVE (TODOS OS LINKS #)
+    // =======================================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault(); 
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
             }
         });
     });
-}
 
-window.addEventListener('load', addLoadingToButtons);
+    // =======================================================
+    // V. SCROLLSPY (DESTAQUE NA NAVEGAÇÃO)
+    // =======================================================
+    const navLinks = document.querySelectorAll('header nav a');
+    const sections = document.querySelectorAll('section[id]');
+    const offset = 100; // Margem de segurança
+
+    function removeActiveClass() {
+        navLinks.forEach(link => {
+            link.classList.remove('underline', 'underline-offset-2', 'font-bold', 'text-[#00d86d]', 'scale-125');
+            link.classList.add('font-light');
+        });
+    }
+
+    function scrollSpy() {
+        const currentScroll = window.scrollY;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - offset;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (currentScroll >= sectionTop && currentScroll < sectionBottom) {
+                removeActiveClass();
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('underline', 'underline-offset-2', 'font-bold', 'text-[#00d86d]', 'scale-125');
+                        link.classList.remove('font-light');
+                    }
+                });
+            }
+        });
+    }
+
+    window.addEventListener('scroll', scrollSpy);
+    window.addEventListener('load', scrollSpy);
+
+
+    // =======================================================
+    // VI. LOADING NOS BOTÕES
+    // =======================================================
+    function addLoadingToButtons() {
+        const actionButtons = document.querySelectorAll('a button'); 
+
+        actionButtons.forEach(button => {
+            button.classList.add('relative');
+
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const buttonElement = this;
+                const parentLink = buttonElement.closest('a');
+
+                if (buttonElement.classList.contains('loading')) return;
+
+                buttonElement.classList.add('loading');
+                buttonElement.disabled = true;
+
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = `<span class="opacity-0">${originalText}</span>`;
+
+                const spinner = document.createElement('i');
+                spinner.className = 'bi bi-arrow-clockwise animate-spin text-2xl absolute inset-0 flex items-center justify-center';
+                buttonElement.appendChild(spinner);
+
+                if (parentLink && parentLink.href) {
+                    const isInternalLink = parentLink.getAttribute('href').startsWith('#') && parentLink.hash.length > 0;
+
+                    setTimeout(() => {
+                        if (isInternalLink) {
+                            window.location.href = parentLink.href; 
+                            // Restaura o botão
+                            buttonElement.classList.remove('loading');
+                            buttonElement.innerHTML = originalText;
+                            buttonElement.disabled = false;
+                        } else {
+                            window.location.href = parentLink.href;
+                        }
+                    }, 250); 
+                }
+            });
+        });
+    }
+
+    window.addEventListener('load', addLoadingToButtons);
+});
