@@ -1,31 +1,56 @@
 // Carrossel: 
-
 const slidesContainer = document.getElementById('carousel-slides');
-const slides = slidesContainer.querySelectorAll('img');
-const totalSlides = slides.length;
-let currentSlide = 0;
 
-function updateCarousel() {
-    // Calcula o deslocamento horizontal (em porcentagem) para a imagem correta
-    const offset = currentSlide * 100;
-    slidesContainer.style.transform = `translateX(-${offset}%)`;
+if (slidesContainer) {
+    const slides = slidesContainer.querySelectorAll('img'); 
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+    let intervalTime = 5000; // Troca a cada 5 segundos
+    let autoScrollInterval;
+
+    function goToSlide(index) {
+        // Garante que o índice esteja dentro dos limites (looping infinito)
+        if (index < 0) {
+            currentSlide = totalSlides - 1;
+        } else if (index >= totalSlides) {
+            currentSlide = 0;
+        } else {
+            currentSlide = index;
+        }
+
+        const offset = currentSlide * -100;
+        slidesContainer.style.transform = `translateX(${offset}%)`;
+    }
+
+    // Funções de controle
+    function startAutoScroll() {
+        // Limpa o intervalo anterior antes de iniciar um novo
+        clearInterval(autoScrollInterval); 
+        autoScrollInterval = setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, intervalTime);
+    }
+
+    function stopAutoScroll() {
+        clearInterval(autoScrollInterval);
+    }
+    
+    // Funções acessíveis pelos botões HTML (Corrigido para parar/reiniciar)
+    window.nextSlide = function() {
+        stopAutoScroll(); 
+        goToSlide(currentSlide + 1);
+        startAutoScroll(); 
+    }
+
+    window.prevSlide = function() {
+        stopAutoScroll();
+        goToSlide(currentSlide - 1);
+        startAutoScroll();
+    }
+
+    // Inicia o carrossel automático
+    window.addEventListener('load', startAutoScroll);
 }
-
-// Função para o botão PRÓXIMO
-window.nextSlide = function () {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateCarousel();
-}
-
-// Função para o botão ANTERIOR
-window.prevSlide = function () {
-    // Adiciona totalSlides para garantir que o resultado da operação de módulo seja positivo
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateCarousel();
-}
-
-// Opcional: Adicionar Autoplay (se quiser que troque automaticamente a cada 5 segundos)
-setInterval(window.nextSlide, 5000); 
 
 // Navegação:
 const header = document.querySelector('header');

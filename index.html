@@ -8,17 +8,14 @@
     <link rel="shortcut icon" href="./assets/img/icon/hordacrossicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
 </head>
 <body class="font-['Poppins'] bg-gray-100">
 
     <header class="bg-white flex flex-row items-center justify-between gap-4 p-4 h-[75px] pr-4 shadow-xl 
                  transition duration-300 transform fixed top-0 w-full z-[100] sm:p-5 sm:pr-10 sm:gap-10">
-        <img src="./assets/img/logohorda.png" class="w-[50px] h-[50px]">
+        <a href="#inicio" class="transition duration-500">
+            <img src="./assets/img/logohorda.png" class="w-[50px] h-[50px]">
+        </a>
         
         <nav class="hidden md:flex flex-row justify-end gap-5 lg:gap-10 text-sm font-light">
             <a href="#inicio" class="transition duration-500 transform hover:text-[#00d86d]">
@@ -60,7 +57,6 @@
                     <div id="carousel-slides" class="flex transition-transform duration-500 ease-in-out h-full">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC03968.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02772.jpg">
-                        <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02816.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02837.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02900.jpg">
                         <img class="min-w-full h-full object-cover" src="./assets/img/carrossel/DSC02959.jpg">
@@ -87,14 +83,14 @@
             </div>
         </section>
 
-        <section id="sobre" class="flex flex-col items-center px-5 sm:px-10">
-            <p class="text-3xl font-bold p-5 text-center">Sobre nós</p>
+        <section id="sobre" class="flex flex-col items-center py-5 px-5 sm:px-10">
+            <p class="text-3xl font-bold p-5">Sobre nós</p>
             <div class="text-center text-lg md:text-xl font-medium max-w-4xl">
                 <p>Mais do que um box, somos uma comunidade. Acreditamos que o CrossFit é a chave para superar barreiras e que a jornada é tão importante quanto o destino. No Horda Cross, você não apenas treina o corpo, mas também fortalece a mente, superando seus próprios limites a cada dia.</p>
             </div>
         </section>
 
-        <section class="flex flex-col items-center px-5 sm:px-10">
+        <section class="flex flex-col items-center px-5 py-5 sm:px-10">
             <p class="text-3xl font-bold p-5 text-center">Nosso coach</p>
             <div class="bg-[#2b2b2b] w-full max-w-3xl md:max-w-[800px] p-8 rounded-xl shadow-lg flex flex-col items-center text-center gap-5 group hover:shadow-xl transition-shadow duration-300">
                 <div class="flex-shrink-0">
@@ -107,7 +103,7 @@
             </div>
         </section>
 
-        <section class="flex flex-col items-center p-5 sm:p-10">
+        <section class="flex flex-col items-center p-5 py-5 sm:p-10">
             <p class="text-3xl font-bold p-5 text-center">Treino Experimental</p>
             <div class="bg-[#2b2b2b] w-full max-w-7xl p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-center gap-8 sm:p-8 sm:gap-10 md:gap-20 group hover:shadow-xl transition-shadow duration-300">
                 <div class="flex flex-col items-center text-center md:text-left gap-5 md:w-1/2 w-full">
@@ -146,7 +142,7 @@
             </div>
         </section>
 
-        <section class="flex flex-col items-center p-5 sm:p-10">
+        <section class="flex flex-col items-center py-5 p-5 sm:p-10">
             <p class="text-3xl font-bold p-5 text-center">Horários e Localização</p>
             <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-10 w-full max-w-5xl">
                 
@@ -223,7 +219,7 @@
             </div>
         </section>
 
-        <section id="planos-mensais" class="flex flex-col m-5 items-center justify-center sm:m-10">
+        <section id="planos-mensais" class="flex flex-col py-5 m-5 items-center justify-center sm:m-10">
             <p class="text-3xl font-bold text-center">Venha treinar no melhor box do Cariri</p>
             <p class="text-xl font-medium text-center pb-5">Veja os melhores preços e planos para você!</p>
             
@@ -289,7 +285,7 @@
             </div>
         </section>
 
-        <section id="contatos" class="flex flex-col m-5 items-center justify-center sm:m-10">
+        <section id="contatos" class="flex flex-col py-5 m-5 items-center justify-center sm:m-10">
             <p class="text-3xl font-bold text-center">Seu próximo nível começa <span class="text-[#00d86d]">aqui</span></p>
             <p class="text-3xl font-bold text-center pb-10">Entre em contato e <span class="text-[#00d86d]">agende sua visita</span></p>
             
