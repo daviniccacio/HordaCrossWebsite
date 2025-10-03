@@ -145,3 +145,62 @@ window.addEventListener('scroll', scrollSpy);
 
 // 6. Executa a função uma vez no carregamento para checar o estado inicial (caso a página recarregue na metade)
 window.addEventListener('load', scrollSpy);
+
+// Loading nos botões:
+function addLoadingToButtons() {
+    const actionButtons = document.querySelectorAll('a button');
+    
+    actionButtons.forEach(button => {
+        // Garante que o botão tenha posição relativa para o spinner
+        button.classList.add('relative'); 
+        
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            
+            const buttonElement = this;
+            const parentLink = buttonElement.closest('a');
+
+            // Se já está carregando, ignora
+            if (buttonElement.classList.contains('loading')) return; 
+
+            // Adiciona a classe de loading e desabilita
+            buttonElement.classList.add('loading');
+            buttonElement.disabled = true;
+            
+            const originalText = buttonElement.innerHTML;
+            
+            // 1. Esconde o texto original
+            buttonElement.innerHTML = `<span class="opacity-0">${originalText}</span>`;
+            
+            // 2. Cria e adiciona o spinner
+            const spinner = document.createElement('i');
+            spinner.className = 'bi bi-arrow-clockwise animate-spin text-2xl absolute inset-0 flex items-center justify-center';
+            buttonElement.appendChild(spinner);
+
+            // 3. Lógica para LINKS INTERNOS (Começam com #) e LINKS EXTERNOS
+            if (parentLink && parentLink.href) {
+                // Checa se o link é interno (apenas um hash ou começa com #nome-secao)
+                const isInternalLink = parentLink.getAttribute('href').startsWith('#') && parentLink.hash.length > 0;
+
+                setTimeout(() => {
+                    if (isInternalLink) {
+                        // Se for link interno (ex: #sobre), navegamos (rolamos)
+                        window.location.href = parentLink.href;
+                        
+                        // E restauramos o botão imediatamente, pois o site não saiu da página.
+                        buttonElement.classList.remove('loading');
+                        buttonElement.innerHTML = originalText;
+                        buttonElement.disabled = false;
+                        
+                    } else {
+                        // Se for link externo (WhatsApp/Agendamento), navegamos e o browser fecha o spinner.
+                        window.location.href = parentLink.href;
+                        // Não restauramos, pois a página irá recarregar ou mudar.
+                    }
+                }, 250); // Tempo de feedback rápido
+            }
+        });
+    });
+}
+
+window.addEventListener('load', addLoadingToButtons);
