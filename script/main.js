@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalSlides = slides.length;
         const AUTOPLAY_DELAY = 5000; // 5 segundos
         const SWIPE_THRESHOLD = 50; // Mínimo de pixels para ser considerado um swipe
-        
+
         let autoplayInterval;
         let resetAutoplayTimeout;
-        
+
         let touchStartX = 0;
         let touchCurrentX = 0;
-        let isSwiping = false; 
+        let isSwiping = false;
 
         // 1. Função principal para atualizar a posição
         function updateCarousel() {
@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         function handleManualInteraction(action) {
             // Para o autoplay e o timer de reinício
             clearInterval(autoplayInterval);
-            clearTimeout(resetAutoplayTimeout); 
-            action(); 
+            clearTimeout(resetAutoplayTimeout);
+            action();
             // Cria um NOVO timer para reiniciar o autoplay após o delay
             resetAutoplayTimeout = setTimeout(startAutoplay, AUTOPLAY_DELAY);
         }
@@ -70,46 +70,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- Eventos de Swipe (Mobile/Touch) ---
-        
+
         // touchstart: Marca o início do movimento
         carousel.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
             touchCurrentX = touchStartX;
             isSwiping = false;
             carouselSlides.style.transition = 'none'; // Desliga transição
-        }, {passive: true});
+        }, { passive: true });
 
         // touchmove: Move o slide e previne a rolagem vertical
         carousel.addEventListener('touchmove', (e) => {
             touchCurrentX = e.changedTouches[0].screenX;
             const deltaX = touchCurrentX - touchStartX;
-            const deltaY = e.changedTouches[0].screenY - e.changedTouches[0].screenY; 
-            
+            const deltaY = e.changedTouches[0].screenY - e.changedTouches[0].screenY;
+
             // Verifica se o movimento é predominantemente horizontal
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
-                e.preventDefault(); 
+                e.preventDefault();
                 isSwiping = true;
                 const offset = -currentIndex * carousel.offsetWidth + deltaX;
                 carouselSlides.style.transform = `translateX(${offset}px)`;
             }
-        }, {passive: false});
+        }, { passive: false });
 
         // touchend: Decisão de navegação
         carousel.addEventListener('touchend', () => {
             const deltaX = touchCurrentX - touchStartX;
-            
+
             if (isSwiping) {
-                if (deltaX < -SWIPE_THRESHOLD) { 
+                if (deltaX < -SWIPE_THRESHOLD) {
                     handleManualInteraction(goToNextSlide);
-                } else if (deltaX > SWIPE_THRESHOLD) { 
+                } else if (deltaX > SWIPE_THRESHOLD) {
                     handleManualInteraction(goToPrevSlide);
                 } else {
                     updateCarousel();
                 }
             } else {
-                updateCarousel(); 
+                updateCarousel();
             }
-            
+
             touchStartX = 0;
             touchCurrentX = 0;
             isSwiping = false;
@@ -122,19 +122,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // =======================================================
-    // II. MENU MOBILE (HAMBURGUER)
+    // II. MENU MOBILE (HAMBURGUER) COM ANIMAÇÃO
     // =======================================================
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (menuToggle && mobileMenu) {
+        // Adiciona classes iniciais para animação
+        mobileMenu.classList.add('transform', '-translate-y-4', 'opacity-0', 'transition-all', 'duration-300', 'ease-out');
+
         menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            const menuIcon = menuToggle.querySelector('i');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                // Abrir menu com animação
+                mobileMenu.classList.remove('hidden');
+                
+                // Pequeno delay para garantir que o elemento está visível antes da animação
+                setTimeout(() => {
+                    mobileMenu.classList.remove('-translate-y-4', 'opacity-0');
+                    mobileMenu.classList.add('translate-y-0', 'opacity-100');
+                }, 10);
+                
+                // Mudar ícone para "X"
+                if (menuIcon) {
+                    menuIcon.classList.remove('bi-list');
+                    menuIcon.classList.add('bi-x');
+                }
+            } else {
+                // Fechar menu com animação
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+                mobileMenu.classList.add('-translate-y-4', 'opacity-0');
+                
+                // Espera a animação terminar para esconder
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+                
+                // Mudar ícone de volta para hamburger
+                if (menuIcon) {
+                    menuIcon.classList.remove('bi-x');
+                    menuIcon.classList.add('bi-list');
+                }
+            }
         });
 
+        // Fechar menu ao clicar em um link (com animação)
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+                const menuIcon = menuToggle.querySelector('i');
+                
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+                mobileMenu.classList.add('-translate-y-4', 'opacity-0');
+                
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+                
+                // Mudar ícone de volta para hamburger
+                if (menuIcon) {
+                    menuIcon.classList.remove('bi-x');
+                    menuIcon.classList.add('bi-list');
+                }
             });
         });
     }
@@ -165,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =======================================================
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
@@ -192,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function scrollSpy() {
         const currentScroll = window.scrollY;
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop - offset;
             const sectionBottom = sectionTop + section.offsetHeight;
@@ -218,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // VI. LOADING NOS BOTÕES
     // =======================================================
     function addLoadingToButtons() {
-        const actionButtons = document.querySelectorAll('a button'); 
+        const actionButtons = document.querySelectorAll('a button');
 
         actionButtons.forEach(button => {
             button.classList.add('relative');
@@ -245,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     setTimeout(() => {
                         if (isInternalLink) {
-                            window.location.href = parentLink.href; 
+                            window.location.href = parentLink.href;
                             // Restaura o botão
                             buttonElement.classList.remove('loading');
                             buttonElement.innerHTML = originalText;
@@ -253,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else {
                             window.location.href = parentLink.href;
                         }
-                    }, 250); 
+                    }, 250);
                 }
             });
         });
